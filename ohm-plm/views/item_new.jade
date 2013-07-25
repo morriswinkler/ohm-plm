@@ -1,0 +1,18 @@
+extends layout
+
+
+block content
+  h1= title
+  div.newitem
+    form( method="post")
+      div
+        div
+          span.label Title :
+          input(type="test", name="title", id="editItemTitle")
+        div
+          span.label Name :
+          input(type="text", name="name", id="editItemName")
+        div#editItemSubmit
+          input(type="submit", value="Save")
+    a(href="/")!= "Back to Item List"
+                  

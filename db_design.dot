@@ -1,0 +1,108 @@
+digraph creatorfab {
+
+
+graph[nodesep=1.05 rankdir=RL splines=lines]
+node [shape=plaintext]
+
+
+item[ label=< 
+<table border="0" cellborder="1" cellspacing="0">
+       <tr>
+	<td bgcolor="black" colspan="2" port="f0"><font color="white"> item </font></td>
+       </tr>
+       <tr>
+	<td bgcolor="green" rowspan="6" port="f1"> development </td>
+	<td bgcolor="green" port="f3"> wiki </td>
+       </tr>
+       <tr>
+	<td bgcolor="green" port="f4"> mailinglist </td>
+       </tr>  
+       <tr>
+	<td bgcolor="green" port="f5"> forum </td>
+       </tr>  
+       <tr>
+	<td bgcolor="green" port="f6"> bugtracking </td>
+       </tr>  
+       <tr>
+	<td bgcolor="green" port="f7"> milestones </td>
+       </tr>  
+       <tr>
+	<td bgcolor="green" port="f8"> github </td>
+       </tr>
+       <tr>
+       <td bgcolor="yellow" rowspan="5" port="f9"> store </td>
+	<td bgcolor="yellow" port="f10"> shop </td>
+       </tr>  
+       <tr>
+	<td bgcolor="yellow" port="f11"> available devices/kits  </td>
+       </tr>  
+       <tr>
+	<td bgcolor="yellow" port="f12"> reproduction <br/> by factorys  </td>
+       </tr>  
+       <tr>
+	<td bgcolor="yellow" port="f13"> collective order <br/>  of materials </td>
+       </tr>  
+       <tr>
+	<td bgcolor="yellow" port="f13"> Bill Of Materials </td>
+       </tr>  
+ </table>
+> ];
+
+
+factoryx[ label=< 
+<table border="0" cellborder="1" cellspacing="0">
+       <tr>
+	<td colspan="2" port="f0"> factory x </td>
+       </tr>
+       <tr>
+	<td bgcolor="magenta" rowspan="4" port="f1"> factory </td>
+	<td bgcolor="magenta" port="f2"> botqueue </td>
+       </tr>
+       <tr>
+	<td bgcolor="magenta" port="f3"> parts config </td>
+       </tr>  
+       <tr>
+	<td bgcolor="magenta" port="f4"> collective order <br/> of materials </td>
+       </tr>  
+       <tr>
+	<td bgcolor="magenta" port="f5"> production capacity </td>
+	</tr>
+	<tr>
+       <td bgcolor="yellow" rowspan="4" port="f6"> store </td>
+	<td bgcolor="yellow" port="f7"> shop </td>
+       </tr>  
+       <tr>
+	<td bgcolor="yellow" port="f8"> available parts  </td>
+       </tr>  
+       <tr>
+	<td bgcolor="yellow" port="f9"> creation of <br/> new parts </td>
+       </tr>  
+       <tr>
+	<td bgcolor="yellow" port="f10"> quality votes </td>
+       </tr>  
+ </table>
+> ];
+
+
+customerx[ label=< 
+<table border="0" cellborder="1" cellspacing="0">
+       <tr>
+	<td colspan="2" port="f0"> customer x </td>
+       </tr>
+       <tr>
+	<td bgcolor="royalblue" rowspan="3" port="f1"> account </td>
+	<td bgcolor="royalblue" port="f2"> order devices/parts </td>
+       </tr>
+       <tr>
+	<td bgcolor="royalblue" port="f3"> vote for quality </td>
+       </tr>  
+       <tr>
+	<td bgcolor="royalblue" port="f4"> collective order <br/> of materials </td>
+       </tr>  
+ </table>
+> ];
+
+
+
+
+}

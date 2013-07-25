@@ -1,0 +1,32 @@
+extends layout
+
+block content
+  div.span9
+    ul#myTab.nav.nav-tabs(data-tabs="tabs")
+      li.active
+        a(href="#first", data-toggle="tab")!= "first"
+      li
+        a(href="#second", data-toggle="tab")!= "second"
+      li
+        a(href="#third", data-toggle="tab")!= "third"
+
+    div.tab-content
+      div#first.tab-pane.active
+        p first tab
+      div#second.tab-pane
+        p second tab
+      div#third.tab-pane
+        p third tab
+        
+  
+
+
+  h1= title
+  #items
+      - each item in items
+        div.item
+          div.created_at= item.created_at
+          div.title= item.title
+          div.name= item.name
+      a(href="/item/new")!= "Add new Item"
+    
