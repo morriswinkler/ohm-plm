@@ -1,0 +1,57 @@
+extends layout
+
+block content
+  div.span9
+    section#global
+      ul#myTab.nav.nav-tabs(data-tabs="tabs")
+        li.active
+          a(href="#first", data-toggle="tab")!= "first"
+        li
+          a(href="#second", data-toggle="tab")!= "second"
+        li
+          a(href="#third", data-toggle="tab")!= "third"
+
+      ul.breadcrumb.text-left
+        li.dropdown
+          a#branches.btn.dropdown-toggle(role="button", data-toggle="dropdown", href="#")!= "section"
+            span.caret
+          ul.dropdown-menu
+            - each section in sections
+              if section.name != 'root'
+                li
+                  a(href="#")= section.name
+            li.divider
+            li
+              a(href="#ModalAddSection", data-toggle="modal")!= "add Section" 
+              
+
+        div#ModalAddSection.modal.hide.fade(tabindex="-1", role="dialog", arial-labelled="Label", aria-hidden="true")
+          div.modal-header
+            button.close(type="button", data-dismiss="modal", aria-hidden="true") x
+            h3#Label Add Section
+          div.modal-body
+            form#FormAddSection.form-horizontal(accept-charset="UTF-8", action="/tagging", method="post")
+              div.control-group
+                label.control-label(for="SectionName") Section Name: 
+                div.controls
+                  input#SectionName(name="section", type="text", value="")
+                  input(name="path", type="hidden", value=path)               
+
+
+          
+          div.modal-footer
+            button.btn(data-dismiss="modal", aria-hidden="true") Close
+            button#FormAddSection.btn.btn-primary(type="submit", form="FormAddSection") Save Changes
+            
+      div.tab-content.pull-left
+        div#first.tab-pane.active
+          p first tab
+        div#second.tab-pane
+          p second tab
+        div#third.tab-pane
+          p third tab
+        
+  
+
+
+     h1= title
