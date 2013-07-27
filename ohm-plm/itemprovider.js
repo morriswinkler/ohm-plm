@@ -10,6 +10,7 @@ ItemProvider = function(host, port) {
 };
 
 
+
 ItemProvider.prototype.getCollection= function(callback) {
   this.db.collection('items', function(error, item_collection) {
     if( error ) callback(error);

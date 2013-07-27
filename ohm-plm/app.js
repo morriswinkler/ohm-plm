@@ -11,6 +11,7 @@ var express = require('express')
   , http = require('http')
   , path = require('path')
   , ItemProvider = require('./itemprovider').ItemProvider;
+var MemoryStore = express.session.MemoryStore;
 
 var app = express();
 
@@ -22,24 +23,33 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
+
+// session cookie
+app.use(express.cookieParser());
+app.use(express.session({
+    secret: '1234567890QWERTY'
+}));
 app.use(app.router);
 app.use(require('stylus').middleware(__dirname + '/public'));
 app.use(express.static(path.join(__dirname, 'public')));
+
+
 
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+var itemProvider= new  ItemProvider('localhost', 27017);
 
-var itemProvider= new ItemProvider('localhost', 27017);
+
 
 app.request.itemProvider = app.response.itemProvider = itemProvider;
 
 // Routes
 
-app.get('/', index.index);
-app.get('/parts', parts.index);
+//app.get('/', index.index);
+app.get('/', parts.index);
 
 
 
