@@ -12,30 +12,71 @@ block content
           a(href="#third", data-toggle="tab")!= "third"
 
       ul.breadcrumb.text-left
-        li.dropdown
-          a#branches.btn.dropdown-toggle(role="button", data-toggle="dropdown", href="#")!= "section"
-            span.caret
-          ul.dropdown-menu
-            - each section in sections
-              if section.name != 'root'
+        if sectionName == 'none' 
+          li.dropdown
+            a#branches.btn.dropdown-toggle(role="button", data-toggle="dropdown", href="#")!= "Sub Section"
+              span.caret
+          
+            ul.dropdown-menu
+              - each section in sections
                 li
-                  a(href="#")= section.name
-            li.divider
-            li
-              a(href="#ModalAddSection", data-toggle="modal")!= "add Section" 
-              
+                  a(href="/part/?name="+section.name)= section.name
+              li.divider
+              li
+                a.openAddSection(href="#ModalAddSection", data-path=sections[0].path,  data-toggle="modal")!= "add Section" 
+        else
+          - var pos = 1
+          - each top_sections in sections
+            
+            - var s_name = arrayPath[pos]
+            - pos += 1
+
+            
+            li.dropdown
+              if s_name 
+                a#branches.btn.dropdown-toggle(role="button", data-toggle="dropdown", href="#")!= s_name
+                  span.caret
+              else
+                a#branches.btn.dropdown-toggle(role="button", data-toggle="dropdown", href="#")!= sectionName
+                  span.caret
+
+              ul.dropdown-menu
+                -each section in top_sections
+                  li
+                    a(href="/part/?name="+section.name)= section.name
+                li.divider
+                li
+                  a.openAddSection(href="#ModalAddSection", data-path=top_sections[0].path, data-toggle="modal")!= "add Section" 
+           
+          
+          li.dropdown
+            a#branches.btn.dropdown-toggle(role="button", data-toggle="dropdown", href="#")!= "sub sections"
+              span.caret
+
+            ul.dropdown-menu
+              -each section in subsections
+                li
+                  a(href="/part/?name="+section.name)= section.name
+              li.divider
+              li
+                a.openAddSection(href="#ModalAddSection", data-path=sectionPath + sectionName + ',', data-toggle="modal")!= "add Section" 
+     
+
+
+
+
 
         div#ModalAddSection.modal.hide.fade(tabindex="-1", role="dialog", arial-labelled="Label", aria-hidden="true")
           div.modal-header
             button.close(type="button", data-dismiss="modal", aria-hidden="true") x
             h3#Label Add Section
           div.modal-body
-            form#FormAddSection.form-horizontal(accept-charset="UTF-8", action="/tagging", method="post")
+            form#FormAddSection.form-horizontal(accept-charset="UTF-8", action="/part/addSection", method="post")
               div.control-group
                 label.control-label(for="SectionName") Section Name: 
                 div.controls
-                  input#SectionName(name="section", type="text", value="")
-                  input(name="path", type="hidden", value=path)               
+                  input#SectionName(name="name", type="text", value="")
+                  input(name="path", id="path",  type="hidden", value= sectionPath)               
 
 
           
@@ -46,6 +87,7 @@ block content
       div.tab-content.pull-left
         div#first.tab-pane.active
           p first tab
+ 
         div#second.tab-pane
           p second tab
         div#third.tab-pane
@@ -54,4 +96,13 @@ block content
   
 
 
-     h1= title
+      h1= title
+
+  script(type='text/javascript').
+    $(document).on("click", ".openAddSection", function () {
+      var myPath = $(this).data('path');
+      $(".modal-body #path").val( myPath );
+      // As pointed out in comments, 
+      // it is superfluous to have to manually call the modal.
+      // $('#addBookDialog').modal('show');
+    });

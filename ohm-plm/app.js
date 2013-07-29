@@ -4,13 +4,16 @@
  */
 
 var express = require('express')
+  , mongoose = require('mongoose')
+  , SectionModel = require('./models/part')
+  , Section = mongoose.model('Section')
   , routes = require('./routes')
   , index = require('./routes/index')
   , parts = require('./routes/parts')
   , user = require('./routes/user')
   , http = require('http')
-  , path = require('path')
-  , ItemProvider = require('./itemprovider').ItemProvider;
+  , path = require('path');
+
 var MemoryStore = express.session.MemoryStore;
 
 var app = express();
@@ -40,16 +43,22 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-var itemProvider= new  ItemProvider('localhost', 27017);
 
+// Database Connection
 
-
-app.request.itemProvider = app.response.itemProvider = itemProvider;
+if ('development' == app.get('env')) {
+  mongoose.connect('mongodb://localhost/ohm-plm');
+} else {
+  // insert db connection for production
+}
 
 // Routes
 
 //app.get('/', index.index);
 app.get('/', parts.index);
+
+app.get('/part/', parts.index);
+app.post('/part/addSection', parts.addSection);
 
 
 
@@ -72,6 +81,13 @@ app.post('/item/new', function(req, res){
 
 //app.get('/users', user.list);
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+// Start Server w/ DB Connection
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function callback () {
+  http.createServer(app).listen(app.get('port'), function(){
+    console.log('Express server listening on port ' + app.get('port'));
+  });
 });
+
