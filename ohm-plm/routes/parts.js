@@ -6,7 +6,7 @@
 
 var mongoose = require('mongoose')
   , Section = mongoose.model('Section')
-  
+  , Part = mongoose.model('Part')
 
 
 var GetSection = require('../models/part') 
@@ -21,9 +21,10 @@ exports.index = function(req, res){
 
     function render(sectName, sects, subsects, path) { 
 	
-	console.log('name reached: ' + sectName);
-	console.log('sect reached: ' + sects);
-	console.log('sub reached: ' + subsects);
+	// console.log('name reached: ' + sectName);
+	// console.log('sect reached: ' + sects);
+	// console.log('sub reached: ' + subsects);
+
 
 
 	res.render('parts', {
@@ -92,9 +93,9 @@ exports.addSection = function(req, res){
     res.redirect('/');
 };
 
-exports.setSection = function(req,res){
-    req.session.sectionName = req.param('name')
+exports.addPart = function(req, res){
+    var newPart = new Part(req.body);
+    newPart.save();
     res.redirect('/');
-    
-
 };
+

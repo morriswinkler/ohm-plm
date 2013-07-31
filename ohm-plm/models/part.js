@@ -5,6 +5,7 @@ var mongoose = require('mongoose')
 var SectionSchema = new Schema({
   createdAt : { type: Date, default: Date.now },
   name : { type: String, required: true, index: { unique: true } },
+  desc : { type: String, required: true },
   path : { type: String, required: true, default: 'root' }
 });
 
@@ -13,17 +14,23 @@ module.exports = mongoose.model('Section', SectionSchema);
 
 var Section = mongoose.model('Section');
 
-exports.getBreadcrumbs = function(sectionName, error, callback){
+// price per unit is saved as integer so allways divide by 100
 
-    return Section.find(function(err, breadcrumbs){
-    
-	var tmp_path = Section.findOne({'name': SectionName});
-	var split_tmp_path = tmp_path.path.path.split(',');
-	console.log('tmp_path = ' + split_tmp_path[0]);
-    
-    });
-};
+var PartSchema = new Schema({
+  createdAt : { type: Date, default: Date.now },
+  name : { type: String, required: true, index: { unique: true } },
+  desc : { type: String, required: true },
+  path : { type: String, required: true, default: 'root,' },
+  image: { type: String}, 
+  in_stock: {type: Number, default: 0},
+  price: { type: Number, default: 0},
+  last_purchase: [{ type: Schema.Types.ObjectId }]
+});
 
+
+module.exports = mongoose.model('Part', PartSchema);
+
+var Part = mongoose.model('Part');
 
 
 

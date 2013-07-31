@@ -1,5 +1,10 @@
 extends layout
 
+block append head
+  link(rel='stylesheet', href='/stylesheets/jquery.Jcrop.min.css')
+  script(src='/javascripts/jquery.form-minified.js')
+  script(src='/javascripts/upload.js')
+  script(src='/javascripts/jquery.Jcrop.min.js')
 block content
   div.span9
     section#global
@@ -24,6 +29,7 @@ block content
               li.divider
               li
                 a.openAddSection(href="#ModalAddSection", data-path=sections[0].path,  data-toggle="modal")!= "add Section" 
+                a.openDelSection(href="#ModalDelSection", data-path=sections[0].path,  data-toggle="modal")!= "delete Section" 
         else
           - var pos = 1
           - each top_sections in sections
@@ -43,11 +49,11 @@ block content
               ul.dropdown-menu
                 -each section in top_sections
                   li
-                    a(href="/part/?name="+section.name)= section.name
+                    a( href="/part/?name="+section.name)= section.name
                 li.divider
                 li
                   a.openAddSection(href="#ModalAddSection", data-path=top_sections[0].path, data-toggle="modal")!= "add Section" 
-           
+                  a.openDelSection(href="#ModalDelSection", data-path=top_sections[0].path, data-toggle="modal")!= "delete Section"  
           
           li.dropdown
             a#branches.btn.dropdown-toggle(role="button", data-toggle="dropdown", href="#")!= "sub sections"
@@ -60,30 +66,19 @@ block content
               li.divider
               li
                 a.openAddSection(href="#ModalAddSection", data-path=sectionPath + sectionName + ',', data-toggle="modal")!= "add Section" 
-     
+                a.openDelSection(href="#ModalDelSection", data-path=sectionPath + sectionName + ',', data-toggle="modal")!= "delete Section" 
 
 
 
 
 
-        div#ModalAddSection.modal.hide.fade(tabindex="-1", role="dialog", arial-labelled="Label", aria-hidden="true")
-          div.modal-header
-            button.close(type="button", data-dismiss="modal", aria-hidden="true") x
-            h3#Label Add Section
-          div.modal-body
-            form#FormAddSection.form-horizontal(accept-charset="UTF-8", action="/part/addSection", method="post")
-              div.control-group
-                label.control-label(for="SectionName") Section Name: 
-                div.controls
-                  input#SectionName(name="name", type="text", value="")
-                  input(name="path", id="path",  type="hidden", value= sectionPath)               
-
-
-          
-          div.modal-footer
-            button.btn(data-dismiss="modal", aria-hidden="true") Close
-            button#FormAddSection.btn.btn-primary(type="submit", form="FormAddSection") Save Changes
             
+
+      div.pull-right
+        a.openAddPart.btn.dropdown-toggle(href="#ModalAddPart", role="button", data-toggle="modal")!= "add Part"
+  
+
+       // tabs
       div.tab-content.pull-left
         div#first.tab-pane.active
           p first tab
@@ -102,7 +97,65 @@ block content
     $(document).on("click", ".openAddSection", function () {
       var myPath = $(this).data('path');
       $(".modal-body #path").val( myPath );
-      // As pointed out in comments, 
-      // it is superfluous to have to manually call the modal.
-      // $('#addBookDialog').modal('show');
     });
+       
+    $(document).on("click", ".openDelSection", function () {
+      var myPath = $(this).data('path');
+        
+      $(".modal-body #path").val( myPath );
+    });
+
+
+  //
+  //   modals
+  //
+
+  // add part
+  div#ModalAddPart.modal.hide.fade(tabindex="-1", role="dialog", arial-labelled="Label", aria-hidden="true")
+    div.modal-header
+      button.close(type="button", data-dismiss="modal", aria-hidden="true") x
+      h3#Label Add Part
+    div.modal-body
+      form#uploadForm(enctype="multipart/form-data", action="/api/photos", method="post")
+        input#userPhotoInput(type="file", name="userPhoto")
+      span#status
+      img#uploadImage(src="", alt="")
+      input#sendCrop(type="button", value="Crop", disabled="disabled") 
+
+      form#FormAddPart.form-horizontal(accept-charset="UTF-8", action="/part/addPart", method="post")
+        fieldset
+          div.control-group
+            label.control-label(for="SectionName") Section Name: 
+            div.controls
+              input#SectionName(name="name", type="text", value="", placeholder="placeholder", class="input-xlarge")
+            
+          div.control-group 
+            label.control-label(for="SectionDesc") Description:  
+            div.controls
+              textarea#SectionDesc.input-xlarge(name="desc", value="")
+              input(name="path", id="path",  type="hidden", value= sectionPath + sectionName + ',')               
+         
+    div.modal-footer
+      button.btn(data-dismiss="modal", aria-hidden="true") Close
+      button#FormAddPart.btn.btn-primary(type="submit", form="FormAddPart") Save Changes
+
+
+  // add section
+  div#ModalAddSection.modal.hide.fade(tabindex="-1", role="dialog", arial-labelled="Label", aria-hidden="true")
+    div.modal-header
+      button.close(type="button", data-dismiss="modal", aria-hidden="true") x
+      h3#Label Add Section
+    div.modal-body
+      form#FormAddSection.form-horizontal(accept-charset="UTF-8", action="/part/addSection", method="post")
+        div.control-group
+          label.control-label(for="SectionName") Section Name: 
+          div.controls
+            input#SectionName(name="name", type="text", value="")
+          label.control-label(for="SectionDesc") Description:  
+          div.controls
+            input#SectionDesc(name="desc", type="text", value="")
+            input(name="path", id="path",  type="hidden", value= sectionPath)               
+
+    div.modal-footer
+      button.btn(data-dismiss="modal", aria-hidden="true") Close
+      button#FormAddSection.btn.btn-primary(type="submit", form="FormAddSection") Save Changes

@@ -59,6 +59,7 @@ app.get('/', parts.index);
 
 app.get('/part/', parts.index);
 app.post('/part/addSection', parts.addSection);
+app.post('/part/addPart', parts.addPart);
 
 
 

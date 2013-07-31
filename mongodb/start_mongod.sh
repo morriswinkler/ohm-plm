@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ ! -f log/mongod.log]
+if [ ! -f log/mongod.log ]
 then
     touch log&mongod.log
 fi
