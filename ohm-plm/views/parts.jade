@@ -2,9 +2,9 @@ extends layout
 
 block append head
   link(rel='stylesheet', href='/stylesheets/jquery.Jcrop.min.css')
-  script(src='/javascripts/jquery.form-minified.js')
+  script(src='/javascripts/jquery.form.js')
   script(src='/javascripts/upload.js')
-  script(src='/javascripts/jquery.Jcrop.min.js')
+  script(src='/javascripts/jquery.Jcrop.js')
 block content
   div.span9
     section#global
@@ -101,8 +101,10 @@ block content
        
     $(document).on("click", ".openDelSection", function () {
       var myPath = $(this).data('path');
-        
       $(".modal-body #path").val( myPath );
+    });
+    $(document).on("click", ".openAddPart", function () {
+      image_up_crop();
     });
 
 
@@ -119,7 +121,7 @@ block content
       form#uploadForm(enctype="multipart/form-data", action="/api/photos", method="post")
         input#userPhotoInput(type="file", name="userPhoto")
       span#status
-      img#uploadImage(src="", alt="")
+      img#uploadedImage(src=" ", alt=" ")
       input#sendCrop(type="button", value="Crop", disabled="disabled") 
 
       form#FormAddPart.form-horizontal(accept-charset="UTF-8", action="/part/addPart", method="post")

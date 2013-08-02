@@ -1,5 +1,5 @@
-$(document).ready(function() {
-
+//$(document).ready(function() {
+function image_up_crop() {
     status('Choose a file !');
 
     // Check to see when a user has selected a file                                                                                                                
@@ -39,8 +39,9 @@ $(document).ready(function() {
                 var bounds, boundx, boundy;
                 
                 $('#uploadedImage').Jcrop({
-                    onChange: showPreview,
+		    onChange: showPreview,
                     onSelect: showPreview,
+		    bgColor: 'transparent',
                     onRelease: disablePreview,
                     aspectRatio: 1
                 }, function(){
@@ -56,6 +57,8 @@ $(document).ready(function() {
 
                 function showPreview(coords)
                 {
+
+		    //showCoords();
                     info = coords;
                     $('#sendCrop').removeAttr('disabled');
                 };
@@ -73,13 +76,13 @@ $(document).ready(function() {
                               $('#uploadedImage').hide();
                               disablePreview();
                                 $('#userPhotoInput').val('');
-                                 timerId = setInterval(function() {
-                                    if($('#userPhotoInput').val() !== '') {
-                                        clearInterval(timerId);
+                                //  timerId = setInterval(function() {
+                                //     if($('#userPhotoInput').val() !== '') {
+                                //         clearInterval(timerId);
 
-                                        $('#uploadForm').submit();
-                                    }
-                                }, 500);
+                                //         $('#uploadForm').submit();
+                                //     }
+                                // }, 500);
                             }
                             else
                             {
@@ -100,4 +103,5 @@ $(document).ready(function() {
     function status(message) {
        $('#status').text(message);
     }
-});
+//});
+};

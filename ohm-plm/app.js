@@ -16,6 +16,11 @@ var express = require('express')
 
 var MemoryStore = express.session.MemoryStore;
 
+// graphiscsmagick for image crop
+var gm = require('gm')
+  , resizeX = 150
+  , resizeY = 150
+
 var app = express();
 
 // all environments
@@ -63,21 +68,50 @@ app.post('/part/addPart', parts.addPart);
 
 
 
+app.post('/api/photos', function(req, res){
+  //console.log(JSON.stringify(req.files));
+  var serverPath = '/images/parts/' + req.files.userPhoto.name;
+  var pathToServer = './public';
 
-app.get('/item/new', function(req, res){
-    res.render('item_new', {
-	title: 'New Item'
-    });
-});
+  require('fs').rename(
+    //userPhoto is the input name
+    req.files.userPhoto.path,
+    pathToServer + serverPath,
+    function(error){
+      if(error){
+        console.log(error)
+        res.send({
+          error: 'File uploaded cancelled, error.'
+        });
+        return;
+      }
 
-app.post('/item/new', function(req, res){
-    itemProvider.save({
-	title: req.param('title'),
-	name: req.param('name')
-    }, function(error, docs){
-	res.redirect('/')
-    });
-});
+      res.send({
+        path: serverPath
+      });
+    }
+  )
+
+})
+
+app.post('/api/crop', function(req, res){
+  var src = req.body.src;
+  var name = req.body.name;
+  var coords = req.body.data;
+  var pathToServer = './public';
+
+  gm(pathToServer + src).crop(coords.w, coords.h, coords.x, coords.y).scale(resizeX,resizeY).write(pathToServer + '/images/parts/cropped_' + name, function(err){
+    if (!err){
+      console.log("Image: " + name + " Cropped");
+      res.send("success");
+    } 
+    else
+    {
+	console.log(err)
+	res.send(err);
+    }
+  })
+})
 
 
 //app.get('/users', user.list);
